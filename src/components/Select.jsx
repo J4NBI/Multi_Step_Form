@@ -10,13 +10,13 @@ export default function Select(props) {
 
   React.useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("SelectData"));
-    console.log(savedData.plan);
-    console.log(savedData.billingType);
+
     if (savedData) {
-      if (savedData.billingType === "yearly") {
-        setYearly(true);
-      }
-      setPlan(savedData.plan);
+      console.log(savedData.plan);
+      console.log(savedData.billingType);
+
+      setPlan(savedData.plan || "arcade");
+      setYearly(savedData.billingType === "yearly");
     }
   }, []);
 
@@ -30,6 +30,16 @@ export default function Select(props) {
       props.nextStep();
     }
   }
+
+  function saveSelectedToLocalStorage() {
+  const submitObject = {
+    plan,
+    billingType: yearly ? "yearly" : "monthly",
+  };
+
+  localStorage.setItem("SelectData", JSON.stringify(submitObject));
+  props.prevStep();
+}
 
   return (
     <div className="container-content">
@@ -130,7 +140,11 @@ export default function Select(props) {
         </div>
 
         <div className="btns">
-          <button className="goBack-btn" onClick={props.prevStep}>
+          <button
+            className="goBack-btn"
+            type="submit"
+            onClick={(e) => saveSelectedToLocalStorage(e)}
+          >
             Go Back
           </button>
           <button

@@ -61,19 +61,23 @@ export default function Personal(props) {
     const personalData = { name, email, phone };
     if (regExName.test(personalData.name)) {
       console.log("name OK");
+      setIsRequiered((prev) => ({ ...prev, name: true }));
     } else {
-      setIsRequiered((prev) => ({ ...prev, email: true }));
+      setIsRequiered((prev) => ({ ...prev, name: false }));
     }
 
     if (regExEmail.test(personalData.email)) {
       console.log("email OK");
-    } else {
       setIsRequiered((prev) => ({ ...prev, email: true }));
+    } else {
+      setIsRequiered((prev) => ({ ...prev, email: false }));
+      
     }
     if (regExPhone.test(personalData.phone)) {
       console.log("phone OK");
-    } else {
       setIsRequiered((prev) => ({ ...prev, phone: true }));
+    } else {
+      setIsRequiered((prev) => ({ ...prev, phone: false }));
     }
     if (
       regExEmail.test(personalData.email) &&

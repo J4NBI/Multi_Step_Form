@@ -368,3 +368,105 @@ label:active {
 .switch input:checked + .slider::before {
   transform: translateX(24px);
 }
+
+.add-div {
+  display: flex;
+}
+
+#addForm {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  justify-items: start;
+  align-items: center;
+  width: 100%;
+}
+
+.addon-checkbox {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s;
+}
+
+/* Checkbox kleiner und lila */
+.addon-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4a25f0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.addon-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.addon-content > p {
+  color: #8c7add;
+}
+
+.addon-text h4 {
+  font-size: 0.8rem;
+}
+
+.addon-text p {
+  opacity: 0.4;
+}
+.Summary-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 20px;
+  color: var(--color-blue-950);
+}
+.content-select {
+  display: flex;
+  gap: 5px;
+}
+
+.div-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.div-select-text {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 5px;
+}
+
+.div-select-text button {
+  background: none;
+  border: none;
+  color: #4a25f0;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.procent {
+  margin-top: 20px;
+  align-self: flex-end;
+  justify-self: flex-end;
+}
+
+.total-div {
+  font-weight: bold;
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
