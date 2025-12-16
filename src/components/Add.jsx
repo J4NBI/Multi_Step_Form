@@ -11,18 +11,21 @@ export default function Add(props) {
       headline: "Online services",
       subtext: "Access to multiplayer games",
       money: "+$1/mo",
+      count: 1,
     },
     {
       id: "storage",
       headline: "Larger storage",
       subtext: "Extra 1TB of cloud save money",
       money: "+$2/mo",
+      count: 2,
     },
     {
       id: "profile",
       headline: "Customizable Profile",
       subtext: "Custom theme on your profile",
       money: "+$2/mo",
+      count: 2,
     },
   ];
 
@@ -33,8 +36,6 @@ export default function Add(props) {
       setSelectedAddons(savedData);
     }
   }, []);
-
-  
 
   // Checkbox ändern
   function handleCheckboxChange(id) {
@@ -77,7 +78,11 @@ export default function Add(props) {
                     <h4>{addon.headline}</h4>
                     <p>{addon.subtext}</p>
                   </div>
-                  <p>{addon.money}</p>
+                  <p>
+                    {!props.isYearly
+                      ? `$${addon.count}/mon`
+                      : `$${addon.count * 12}/year`}
+                  </p>
                 </div>
               </label>
             ))}

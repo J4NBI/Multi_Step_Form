@@ -7,6 +7,7 @@ import pro from "../images/icon-pro.svg";
 export default function Select(props) {
   const [yearly, setYearly] = useState(false);
   const [plan, setPlan] = useState("arcade");
+  const [isYearly, setIsYearly] = React.useState(true);
 
   React.useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("SelectData"));
@@ -32,14 +33,14 @@ export default function Select(props) {
   }
 
   function saveSelectedToLocalStorage() {
-  const submitObject = {
-    plan,
-    billingType: yearly ? "yearly" : "monthly",
-  };
+    const submitObject = {
+      plan,
+      billingType: yearly ? "yearly" : "monthly",
+    };
 
-  localStorage.setItem("SelectData", JSON.stringify(submitObject));
-  props.prevStep();
-}
+    localStorage.setItem("SelectData", JSON.stringify(submitObject));
+    props.prevStep();
+  }
 
   return (
     <div className="container-content">
@@ -63,7 +64,7 @@ export default function Select(props) {
                   <img src={arcade} alt="Arcade Icon" />
                   <div className="billing-content-text">
                     <h4>Arcade</h4>
-                    <p>$9/mo</p>
+                    <p>{isYearly ? `$9/mon` : `$108/year`}</p>
                   </div>
                 </div>
               </label>
@@ -80,7 +81,7 @@ export default function Select(props) {
                   <img src={advanced} alt="Advanced Icon" />
                   <div className="billing-content-text">
                     <h4>Advanced</h4>
-                    <p>$12/mo</p>
+                    <p>{isYearly ? `$12/mon` : `$144/year`}</p>
                   </div>
                 </div>
               </label>
@@ -97,7 +98,7 @@ export default function Select(props) {
                   <img src={pro} alt="Pro Icon" />
                   <div className="billing-content-text">
                     <h4>Pro</h4>
-                    <p>$15/mo</p>
+                    <p>{isYearly ? `$15/mon` : `$180/year`}</p>
                   </div>
                 </div>
               </label>
@@ -110,7 +111,11 @@ export default function Select(props) {
                   name="billingType"
                   value="monthly"
                   checked={!yearly}
-                  onChange={() => setYearly(!yearly)}
+                  onChange={() => {
+                    setYearly(!yearly);
+                    props.setIsYearly();
+                    setIsYearly((prev) => !prev);
+                  }}
                   readOnly
                 />
                 <span>Monthly</span>
@@ -120,7 +125,11 @@ export default function Select(props) {
                 <input
                   type="checkbox"
                   checked={yearly}
-                  onChange={() => setYearly(!yearly)}
+                  onChange={() => {
+                    setYearly(!yearly);
+                    props.setIsYearly();
+                    setIsYearly((prev) => !prev);
+                  }}
                 />
                 <span className="slider"></span>
               </label>
