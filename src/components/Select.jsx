@@ -10,7 +10,8 @@ export default function Select(props) {
     const savedData = JSON.parse(localStorage.getItem("SelectData"));
     if (savedData) {
       setPlan(savedData.plan || "arcade");
-      if (props.setIsYearly) props.setIsYearly(savedData.billingType === "yearly");
+      if (props.setIsYearly)
+        props.setIsYearly(savedData.billingType === "yearly");
     }
   }, []);
 
@@ -42,7 +43,9 @@ export default function Select(props) {
       <div className="content-div">
         <div className="content">
           <h2 className="heading">Select your plan</h2>
-          <p className="subhead">You have the option of monthly or yearly billing.</p>
+          <p className="subhead">
+            You have the option of monthly or yearly billing.
+          </p>
           <form onSubmit={getSelectForm} id="selectForm">
             <div className="billings">
               <label className="billing-box">
