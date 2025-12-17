@@ -6,9 +6,6 @@ export default function Summary(props) {
     selected: null,
     addon: [],
   });
-  function SubmitData() {
-    localStorage.clear();
-  }
 
   React.useEffect(() => {
     const savedDataPersonal = JSON.parse(localStorage.getItem("personalData"));
@@ -107,12 +104,12 @@ export default function Summary(props) {
                   <p>{a}</p>
                   <p>
                     {!props.isYearly
-                      ? index === 0
+                      ? a === "Online services"
                         ? `$1/${props.isYearly ? "year" : "mon"}`
                         : `$2/${props.isYearly ? "year" : "mon"}`
-                      : index === 0
+                      : a === "Online services"
                       ? `$10/${props.isYearly ? "year" : "mon"}`
-                      : `$12/${props.isYearly ? "yaer" : "mon"}`}
+                      : `$12/${props.isYearly ? "year" : "mon"}`}
                   </p>
                 </div>
               ))}
@@ -138,7 +135,12 @@ export default function Summary(props) {
           <button className="goBack-btn" type="button" onClick={props.prevStep}>
             Go Back
           </button>
-          <button className="nextStep-btn personal-next-btn">Next Step</button>
+          <button
+            className="nextStep-btn personal-next-btn"
+            onClick={props.nextStep}
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>

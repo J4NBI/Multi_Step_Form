@@ -1,23 +1,16 @@
-import { useState } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import arcade from "../images/icon-arcade.svg";
 import advanced from "../images/icon-advanced.svg";
 import pro from "../images/icon-pro.svg";
 
 export default function Select(props) {
-  const [yearly, setYearly] = useState(false);
   const [plan, setPlan] = useState("arcade");
-  const [isYearly, setIsYearly] = React.useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("SelectData"));
-
     if (savedData) {
-      console.log(savedData.plan);
-      console.log(savedData.billingType);
-
       setPlan(savedData.plan || "arcade");
-      setYearly(savedData.billingType === "yearly");
+      if (props.setIsYearly) props.setIsYearly(savedData.billingType === "yearly");
     }
   }, []);
 
@@ -25,31 +18,31 @@ export default function Select(props) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const submitObject = Object.fromEntries(formData);
-    if (submitObject.plan && submitObject.billingType) {
-      localStorage.setItem("SelectData", JSON.stringify(submitObject));
-
-      props.nextStep();
-    }
+    submitObject.plan = submitObject.plan || plan;
+    submitObject.billingType = props.isYearly ? "yearly" : "monthly";
+    localStorage.setItem("SelectData", JSON.stringify(submitObject));
+    props.nextStep();
   }
 
   function saveSelectedToLocalStorage() {
     const submitObject = {
       plan,
-      billingType: yearly ? "yearly" : "monthly",
+      billingType: props.isYearly ? "yearly" : "monthly",
     };
-
     localStorage.setItem("SelectData", JSON.stringify(submitObject));
     props.prevStep();
   }
+
+  const handleYearlyChange = (value) => {
+    if (props.setIsYearly) props.setIsYearly(value);
+  };
 
   return (
     <div className="container-content">
       <div className="content-div">
         <div className="content">
           <h2 className="heading">Select your plan</h2>
-          <p className="subhead">
-            You have the option of monthly or yearly billing.
-          </p>
+          <p className="subhead">You have the option of monthly or yearly billing.</p>
           <form onSubmit={getSelectForm} id="selectForm">
             <div className="billings">
               <label className="billing-box">
@@ -64,7 +57,7 @@ export default function Select(props) {
                   <img src={arcade} alt="Arcade Icon" />
                   <div className="billing-content-text">
                     <h4>Arcade</h4>
-                    <p>{isYearly ? `$9/mon` : `$108/year`}</p>
+                    <p>{props.isYearly ? "$108/year" : "$9/month"}</p>
                   </div>
                 </div>
               </label>
@@ -81,7 +74,7 @@ export default function Select(props) {
                   <img src={advanced} alt="Advanced Icon" />
                   <div className="billing-content-text">
                     <h4>Advanced</h4>
-                    <p>{isYearly ? `$12/mon` : `$144/year`}</p>
+                    <p>{props.isYearly ? "$144/year" : "$12/month"}</p>
                   </div>
                 </div>
               </label>
@@ -98,7 +91,7 @@ export default function Select(props) {
                   <img src={pro} alt="Pro Icon" />
                   <div className="billing-content-text">
                     <h4>Pro</h4>
-                    <p>{isYearly ? `$15/mon` : `$180/year`}</p>
+                    <p>{props.isYearly ? "$180/year" : "$15/month"}</p>
                   </div>
                 </div>
               </label>
@@ -110,13 +103,8 @@ export default function Select(props) {
                   type="radio"
                   name="billingType"
                   value="monthly"
-                  checked={!yearly}
-                  onChange={() => {
-                    setYearly(!yearly);
-                    props.setIsYearly();
-                    setIsYearly((prev) => !prev);
-                  }}
-                  readOnly
+                  checked={!props.isYearly}
+                  onChange={() => handleYearlyChange(false)}
                 />
                 <span>Monthly</span>
               </label>
@@ -124,12 +112,8 @@ export default function Select(props) {
               <label className="switch">
                 <input
                   type="checkbox"
-                  checked={yearly}
-                  onChange={() => {
-                    setYearly(!yearly);
-                    props.setIsYearly();
-                    setIsYearly((prev) => !prev);
-                  }}
+                  checked={props.isYearly}
+                  onChange={() => handleYearlyChange(!props.isYearly)}
                 />
                 <span className="slider"></span>
               </label>
@@ -139,8 +123,8 @@ export default function Select(props) {
                   type="radio"
                   name="billingType"
                   value="yearly"
-                  checked={yearly}
-                  readOnly
+                  checked={props.isYearly}
+                  onChange={() => handleYearlyChange(true)}
                 />
                 <span>Yearly</span>
               </label>
@@ -151,8 +135,8 @@ export default function Select(props) {
         <div className="btns">
           <button
             className="goBack-btn"
-            type="submit"
-            onClick={(e) => saveSelectedToLocalStorage(e)}
+            type="button"
+            onClick={saveSelectedToLocalStorage}
           >
             Go Back
           </button>
