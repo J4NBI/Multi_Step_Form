@@ -5,7 +5,7 @@ import React from "react";
 
 export default function App() {
   let [isActive, setIsActive] = React.useState(1);
-
+  //localStorage.clear();
   function nextStep() {
     setIsActive((prev) => (prev < 5 ? prev + 1 : prev));
   }

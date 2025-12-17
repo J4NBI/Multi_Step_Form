@@ -428,7 +428,6 @@ label:active {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 20px;
   color: var(--color-blue-950);
 }
 .content-select {
@@ -467,6 +466,22 @@ label:active {
 .total-div {
   font-weight: bold;
   margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.procent {
+  margin-bottom: 20px;
+  color: #4a25f0;
+}
+
+.summary-addons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.summary-addons-items {
   display: flex;
   justify-content: space-between;
 }

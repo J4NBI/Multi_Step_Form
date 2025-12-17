@@ -1,7 +1,11 @@
 import React from "react";
 
 export default function Summary(props) {
-  let [completeData, setCompleteData] = React.useState({});
+  let [completeData, setCompleteData] = React.useState({
+    personal: null,
+    selected: null,
+    addon: [],
+  });
   function SubmitData() {
     localStorage.clear();
   }
@@ -49,9 +53,13 @@ export default function Summary(props) {
 
   // ADD ADDONS
 
-  if (completeData.addon.includes("storage")) {
-    totalPrice += 2;
-  }
+  completeData.addon.forEach((a, index) => {
+    if (!props.isYearly) {
+      totalPrice += index === 0 ? 1 : 2;
+    } else {
+      totalPrice += index === 0 ? 10 : 12;
+    }
+  });
 
   return (
     <div className="container-content">
@@ -67,6 +75,8 @@ export default function Summary(props) {
             <div className="div-select-text">
               <div className="content-select">
                 <h4>{plan && plan.name}</h4>
+
+                {/*----PLAN  -----*/}
                 <p>
                   {`(${completeData.selected?.billingType
                     .substring(0, 1)
@@ -88,6 +98,27 @@ export default function Summary(props) {
             {completeData.selected?.billingType === "yearly" &&
               `20% yearly discount - $${((plan.price * 12) / 100) * 25}/year`}
           </p>
+
+          {/*----ADD ONS -----*/}
+          <div className="summary-addons">
+            {completeData.addon &&
+              completeData.addon.map((a, index) => (
+                <div className="summary-addons-items">
+                  <p>{a}</p>
+                  <p>
+                    {!props.isYearly
+                      ? index === 0
+                        ? `$1/${props.isYearly ? "year" : "mon"}`
+                        : `$2/${props.isYearly ? "year" : "mon"}`
+                      : index === 0
+                      ? `$10/${props.isYearly ? "year" : "mon"}`
+                      : `$12/${props.isYearly ? "yaer" : "mon"}`}
+                  </p>
+                </div>
+              ))}
+          </div>
+          {/*------TOTAL PRICE------*/}
+
           <div className="total-div">
             <p>
               Total price{" "}

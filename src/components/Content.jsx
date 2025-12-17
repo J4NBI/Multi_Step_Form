@@ -36,7 +36,11 @@ export default function Content(props) {
             />
           )}
           {props.isActive === 4 && (
-            <Summary nextStep={props.nextStep} prevStep={props.prevStep} />
+            <Summary
+              isYearly={isYearly}
+              nextStep={props.nextStep}
+              prevStep={props.prevStep}
+            />
           )}
           {props.isActive === 5 && (
             <ThankYou nextStep={props.nextStep} prevStep={props.prevStep} />

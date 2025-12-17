@@ -7,21 +7,21 @@ export default function Add(props) {
   // Liste der Add-ons
   const addons = [
     {
-      id: "online",
+      id: "Online services",
       headline: "Online services",
       subtext: "Access to multiplayer games",
       money: "+$1/mo",
       count: 1,
     },
     {
-      id: "storage",
+      id: "Larger storage",
       headline: "Larger storage",
       subtext: "Extra 1TB of cloud save money",
       money: "+$2/mo",
       count: 2,
     },
     {
-      id: "profile",
+      id: "Customizable Profile",
       headline: "Customizable Profile",
       subtext: "Custom theme on your profile",
       money: "+$2/mo",
