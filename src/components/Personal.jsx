@@ -17,10 +17,9 @@ export default function Personal(props) {
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
 
-  // SET LOCALSTAGE DATA TO VALUES
+  // SET LOCALSTORAGE DATA TO VALUES
   React.useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("personalData"));
-
     if (savedData) {
       setName(savedData.name);
       setEmail(savedData.email);
@@ -28,65 +27,49 @@ export default function Personal(props) {
     }
   }, []);
 
-  // VALUES AND REGEX
+  // REGEX
+  const regExName = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
+  const regExEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regExPhone = /^(?:[+\d][\d\s-]*)\d{6,}$/;
+
+  // CHANGE HANDLERS
   function changeName(e) {
     const val = e.target.value;
     setName(val);
-    const regEx = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
-    setIsFiledCorrect((prev) => ({ ...prev, name: regEx.test(val) }));
+    setIsFiledCorrect((prev) => ({ ...prev, name: regExName.test(val) }));
+    setIsRequiered((prev) => ({ ...prev, name: false }));
   }
 
   function changeEmail(e) {
     const val = e.target.value;
     setEmail(val);
-    const regEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setIsFiledCorrect((prev) => ({ ...prev, email: regEx.test(val) }));
+    setIsFiledCorrect((prev) => ({ ...prev, email: regExEmail.test(val) }));
     setIsRequiered((prev) => ({ ...prev, email: false }));
   }
 
   function changePhone(e) {
     const val = e.target.value;
     setPhone(val);
-    const regEx = /^(?:[+\d][\d\s-]*)\d{6,}$/;
-    setIsFiledCorrect((prev) => ({ ...prev, phone: regEx.test(val) }));
+    setIsFiledCorrect((prev) => ({ ...prev, phone: regExPhone.test(val) }));
     setIsRequiered((prev) => ({ ...prev, phone: false }));
   }
 
-  // SET PERSONAL INFO TO LOCAL STAGE REGEX BEFOR REQUIRE BEFORE
-
+  // VALIDATION AND SAVE
   function getPersonalInfo() {
-    const regExName = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
-    const regExEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const regExPhone = /^(?:[+\d][\d\s-]*)\d{6,}$/;
     const personalData = { name, email, phone };
-    if (regExName.test(personalData.name)) {
-      console.log("name OK");
-      setIsRequiered((prev) => ({ ...prev, name: true }));
-    } else {
-      setIsRequiered((prev) => ({ ...prev, name: false }));
-    }
 
-    if (regExEmail.test(personalData.email)) {
-      console.log("email OK");
-      setIsRequiered((prev) => ({ ...prev, email: true }));
-    } else {
-      setIsRequiered((prev) => ({ ...prev, email: false }));
-      
-    }
-    if (regExPhone.test(personalData.phone)) {
-      console.log("phone OK");
-      setIsRequiered((prev) => ({ ...prev, phone: true }));
-    } else {
-      setIsRequiered((prev) => ({ ...prev, phone: false }));
-    }
-    if (
-      regExEmail.test(personalData.email) &&
-      regExPhone.test(personalData.phone) &&
-      regExName.test(personalData.name)
-    ) {
+    const nameOk = regExName.test(personalData.name);
+    const emailOk = regExEmail.test(personalData.email);
+    const phoneOk = regExPhone.test(personalData.phone);
+
+    setIsRequiered({
+      name: !nameOk,
+      email: !emailOk,
+      phone: !phoneOk,
+    });
+
+    if (nameOk && emailOk && phoneOk) {
       localStorage.setItem("personalData", JSON.stringify(personalData));
-      const savedData = JSON.parse(localStorage.getItem("personalData"));
-      console.log(savedData);
       props.nextStep();
     }
   }
@@ -122,7 +105,11 @@ export default function Personal(props) {
             placeholder="Jon Doe"
             value={name}
             style={{
-              border: isFiledCorrect.name ? "1px solid green" : undefined,
+              border: isFiledCorrect.name
+                ? "1px solid green"
+                : isRequiered.name
+                ? "1px solid red"
+                : undefined,
             }}
             onChange={changeName}
           />
@@ -144,7 +131,11 @@ export default function Personal(props) {
             placeholder="jondoe@web.de"
             value={email}
             style={{
-              border: isFiledCorrect.email ? "1px solid green" : undefined,
+              border: isFiledCorrect.email
+                ? "1px solid green"
+                : isRequiered.email
+                ? "1px solid red"
+                : undefined,
             }}
             onChange={changeEmail}
           />
@@ -165,7 +156,11 @@ export default function Personal(props) {
             placeholder="0152 220030 300"
             value={phone}
             style={{
-              border: isFiledCorrect.phone ? "1px solid green" : undefined,
+              border: isFiledCorrect.phone
+                ? "1px solid green"
+                : isRequiered.phone
+                ? "1px solid red"
+                : undefined,
             }}
             onChange={changePhone}
           />
